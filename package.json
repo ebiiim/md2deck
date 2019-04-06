@@ -1,0 +1,16 @@
+{
+  "name": "md2deck",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "start": "http-server --no-dotfiles",
+    "setup": "git clone https://github.com/hakimel/reveal.js.git; cd reveal.js; npm i; cd .."
+  },
+  "author": "ebiiim",
+  "license": "MIT",
+  "dependencies": {
+    "decktape": "^2.9.2",
+    "http-server": "^0.11.1"
+  }
+}

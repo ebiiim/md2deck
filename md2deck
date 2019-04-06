@@ -1,0 +1,29 @@
+#!/bin/sh
+cd "$(dirname "$0")" || exit
+
+u="Usage: ./md2deck.sh DIR SLIDE [WIDTH] [HEIGHT]"
+if [ "$1" = "" ]; then echo "${u}"; exit 0; fi
+
+d=$1 # DIR
+f=$2 # SLIDE
+w=$3 # [WIDTH]
+h=$4 # [HEIGHT]
+
+ps="${f}" # path_src
+pd="dist/" # path_dist
+rw=${w:-1280} # revealjs-width
+rh=${h:-720} # revealjs-height
+
+# start
+cd "${d}" || exit
+
+# generate html
+pandoc -t revealjs -s -o "${ps}.html" "${ps}.md" -V width="${rw}" -V height="${rh}" -V revealjs-url="../reveal.js"
+open -a "Chromium" "${ps}.html"
+
+# generate pdf
+mkdir -p ${pd} # mkdir pd if pd does not exist
+decktape "${ps}.html" "${pd}/${ps}.pdf" --size "${rw}"x"${rh}"
+
+# end
+cd "$(dirname "$0")" || exit
