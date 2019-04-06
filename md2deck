@@ -23,7 +23,7 @@ open -a "Chromium" "${ps}.html"
 
 # generate pdf
 mkdir -p ${pd} # mkdir pd if pd does not exist
-decktape "${ps}.html" "${pd}/${ps}.pdf" --size "${rw}"x"${rh}"
+npx decktape "${ps}.html" "${pd}/${ps}.pdf" --size "${rw}"x"${rh}"
 
 # end
 cd "$(dirname "$0")" || exit
