@@ -11,8 +11,8 @@ h=$4 # [HEIGHT]
 
 ps="${f}" # path_src
 pd="dist/" # path_dist
-rw=${w:-1280} # revealjs-width
-rh=${h:-720} # revealjs-height
+rw=${w:-1600} # revealjs-width
+rh=${h:-900} # revealjs-height
 
 # start
 cd "${d}" || exit
