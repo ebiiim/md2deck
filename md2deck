@@ -11,14 +11,14 @@ h=$4 # [HEIGHT]
 
 ps="${f}" # path_src
 pd="dist/" # path_dist
-rw=${w:-1600} # revealjs-width
-rh=${h:-900} # revealjs-height
+rw=${w:-1920} # decktape-width
+rh=${h:-1080} # decktape-height
 
 # start
 cd "${d}" || exit
 
 # generate html
-pandoc -t revealjs -s -o "${ps}.html" "${ps}.md" -V width="${rw}" -V height="${rh}" -V revealjs-url="../reveal.js"
+pandoc -t revealjs -s -o "${ps}.html" "${ps}.md" -V revealjs-url="../reveal.js"
 open -a "Chromium" "${ps}.html"
 
 # generate pdf
