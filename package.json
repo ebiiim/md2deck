@@ -5,7 +5,8 @@
   "main": "",
   "scripts": {
     "start": "http-server --no-dotfiles",
-    "setup": "git clone https://github.com/hakimel/reveal.js.git; cd reveal.js; npm i; cd .."
+    "setup": "git clone https://github.com/hakimel/reveal.js.git; cd reveal.js; npm i; cd ..; npm run setup-themes",
+    "setup-themes": "cp -r css reveal.js; cd reveal.js; npm run build -- css-themes; cd .."
   },
   "author": "ebiiim",
   "license": "MIT",

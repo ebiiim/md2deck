@@ -1,0 +1,112 @@
+@import "../reset.css"; // import reset.css here because pandoc does not import it
+@import "../reveal.css";
+
+// bootstrap colors
+$colorDanger: #dc3545;
+$colorWarning: #ffc107;
+$colorSuccess: #28a745;
+$colorInfo: #17a2b8;
+$colorDark: #343a40;
+
+@import "../template/mixins";
+@import "../template/settings";
+
+// =====================================
+// override `../template/settings.scss`
+
+// body
+$mainFont: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Yu Gothic", YuGothic, Arial, Meiryo, sans-serif;
+$mainFontSize: 40px;
+$mainColor: $colorDark;
+// spacing before blocks
+$blockMargin: $mainFontSize/2;
+// margin for all text
+$leftMargin: 2*$mainFontSize;
+$rightMargin: 2*$mainFontSize;
+// headings
+$headingMargin: $blockMargin 0 $blockMargin/4 0;
+$headingFont: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Yu Gothic", YuGothic, Arial, Meiryo, sans-serif;
+$headingColor: $colorDark;
+$headingTextTransform: none;
+$headingTextShadow: 0px 6px 6px $colorDark 90%;
+$heading1TextShadow: none;
+$heading1Size: 2.62em; // golden ratio
+$heading2Size: 1.62em; // golden ratio
+$heading3Size: 1.00em;
+$heading4Size: 0.62em; // use h4 for named blocks
+// code
+$codeFont: "Ricty Diminished", Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace;
+// bg
+$backgroundColor: #fff;
+// links
+$linkColor: $colorInfo;
+$linkColorHover: lighten( $linkColor, 20% );
+// text selection
+$selectionBackgroundColor: $colorDark 80%;
+$selectionColor: #fff;
+
+@import "../template/theme";
+
+// =====================================
+// override `../reveal.scss`
+
+.reveal .slides {
+  // margin: -1*$blockMargin 4*$blockMargin 1*$blockMargin 4*$blockMargin; // top: counteract $blockMargin before headings
+  text-align: left;
+}
+
+// .reveal .slide-number {
+//   font-size: $mainFontSize;
+// }
+
+// =====================================
+// override `../template/theme.scss`
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  margin: 0.5*$mainFontSize 0 0.25*$mainFontSize $mainFontSize;
+}
+
+.reveal ol,
+.reveal dl,
+.reveal ul,
+.reveal dt {
+  margin: 0 0 0 2.5*$mainFontSize;
+}
+
+.reveal p {
+  margin: $blockMargin 0 0 40px;
+}
+
+// imgs without borders
+.reveal section img {
+	margin: $blockMargin 0px -0.33*$blockMargin 0px;
+	background: $colorDark 15%;
+	border: 0px solid #000000;
+	box-shadow: 0 0 5px $colorDark 20%;
+}
+
+// use h4 for named blocks
+.reveal h4 {
+  margin: -1*$blockMargin 0px -1.5*$blockMargin 40px;
+}
+
+.reveal blockquote,
+.reveal pre
+{
+  margin: $blockMargin/4 auto $blockMargin/4 auto;
+}
+
+// =====================================
+// override browser default css
+
+figure {
+  margin: 0 0 0 0;
+  text-align: center;
+}
+figcaption {
+  text-align: center;
+  font-size: 0.50*$mainFontSize;
+}
