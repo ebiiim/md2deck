@@ -47,12 +47,31 @@ $selectionColor: #fff;
 
 @import "../template/theme";
 
+
+// =====================================
+// id/class specific settings
+
+// the first page
+#title-slide {
+  text-align: center;
+}
+
+// normal slides (not title slide)
+.slide .level2 {
+  top: 0px !important;
+}
+
 // =====================================
 // override `../reveal.scss`
 
-.reveal .slides {
-  // margin: -1*$blockMargin 4*$blockMargin 1*$blockMargin 4*$blockMargin; // top: counteract $blockMargin before headings
+.reveal .slides section {
   text-align: left;
+}
+
+// global transition speed
+// 2x fast
+.reveal[data-transition-speed="fast"] .slides section {
+	transition-duration: 200ms;
 }
 
 // .reveal .slide-number {
