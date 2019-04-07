@@ -20,9 +20,6 @@ $mainFontSize: 40px;
 $mainColor: $colorDark;
 // spacing before blocks
 $blockMargin: $mainFontSize/2;
-// margin for all text
-$leftMargin: 2*$mainFontSize;
-$rightMargin: 2*$mainFontSize;
 // headings
 $headingMargin: $blockMargin 0 $blockMargin/4 0;
 $headingFont: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Yu Gothic", YuGothic, Arial, Meiryo, sans-serif;
@@ -85,23 +82,27 @@ $selectionColor: #fff;
 .reveal h2,
 .reveal h3,
 .reveal h4 {
-  margin: 0.25*$mainFontSize 0 0.25*$mainFontSize $mainFontSize;
+  margin: 0.25*$mainFontSize 0 0.25*$mainFontSize 0;
 }
 
+.reveal h1 {
+  margin: 0 0 0 0;
+}
 .reveal h2 {
+  margin-top: 0;
   margin-bottom: 0.5*$mainFontSize
 }
 
 // use h4 for named blocks
 .reveal h4 {
-  margin: -1*$mainFontSize 0px -1*$mainFontSize 40px;
+  margin: -1*$mainFontSize 0px -1*$mainFontSize 0;
 }
 
 .reveal ol,
 .reveal dl,
 .reveal ul,
 .reveal dt {
-  margin-left: 2.5*$mainFontSize;
+  margin-left: 1.5*$mainFontSize;
   margin-top: 0.15*$mainFontSize;
   margin-bottom: 0.3*$mainFontSize;
 }
@@ -120,13 +121,13 @@ $selectionColor: #fff;
 .reveal ul ol,
 .reveal ol ol,
 .reveal ol ul {
-  margin-left: 1.5*$mainFontSize; // indent
+  margin-left: 1.5*$mainFontSize; // indent size
   margin-top: 0.1*$mainFontSize; // margin between list level
   margin-bottom: 0.5*$mainFontSize; // margin after nested lists block
 }
 
 .reveal p {
-  margin: $blockMargin/2 0 $blockMargin/2 40px;
+  margin: $blockMargin/2 0 $blockMargin/2 0;
 }
 
 // imgs without borders
