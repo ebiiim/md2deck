@@ -85,37 +85,62 @@ $selectionColor: #fff;
 .reveal h2,
 .reveal h3,
 .reveal h4 {
-  margin: 0.5*$mainFontSize 0 0.25*$mainFontSize $mainFontSize;
+  margin: 0.25*$mainFontSize 0 0.25*$mainFontSize $mainFontSize;
+}
+
+.reveal h2 {
+  margin-bottom: 0.5*$mainFontSize
+}
+
+// use h4 for named blocks
+.reveal h4 {
+  margin: -1*$mainFontSize 0px -1*$mainFontSize 40px;
 }
 
 .reveal ol,
 .reveal dl,
 .reveal ul,
 .reveal dt {
-  margin: 0 0 0 2.5*$mainFontSize;
+  margin-left: 2.5*$mainFontSize;
+  margin-top: 0.15*$mainFontSize;
+  margin-bottom: 0.3*$mainFontSize;
+}
+
+.reveal ul ul {
+  list-style-type: square;
+  font-size: $mainFontSize * 0.62;
+}
+
+// level 1 list
+.reveal li {
+  margin-bottom: 0.25 * $mainFontSize
+}
+
+.reveal ul ul,
+.reveal ul ol,
+.reveal ol ol,
+.reveal ol ul {
+  margin-left: 1.5*$mainFontSize; // indent
+  margin-top: 0.1*$mainFontSize; // margin between list level
+  margin-bottom: 0.5*$mainFontSize; // margin after nested lists block
 }
 
 .reveal p {
-  margin: $blockMargin 0 0 40px;
+  margin: $blockMargin/2 0 $blockMargin/2 40px;
 }
 
 // imgs without borders
 .reveal section img {
-	margin: $blockMargin 0px -0.33*$blockMargin 0px;
+	margin: $blockMargin/2 0px 0px 0px;
 	background: #ffffff00;
 	border: 0px solid #000000;
 	box-shadow: 0 0 5px $colorDark 20%;
 }
 
-// use h4 for named blocks
-.reveal h4 {
-  margin: -1*$blockMargin 0px -1.5*$blockMargin 40px;
-}
-
 .reveal blockquote,
 .reveal pre
 {
-  margin: $blockMargin/4 auto $blockMargin/4 auto;
+  margin: $blockMargin/2 auto $blockMargin auto;
 }
 
 // =====================================
