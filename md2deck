@@ -1,21 +1,19 @@
 #!/bin/sh
 cd "$(dirname "$0")" || exit
 
-u="Usage: ./md2deck.sh DIR SLIDE [WIDTH] [HEIGHT] [TEMPLATE]"
+u="Usage: ./md2deck DIR SLIDE [TEMPLATE]"
 if [ $# == 0 ]; then echo "${u}"; exit 0; fi
 
 d=$1 # DIR
 f=$2 # SLIDE
-w=$3 # [WIDTH]
-h=$4 # [HEIGHT]
-t=$5 # [TEMPLATE]
+t=$3 # [TEMPLATE]
 
 ps="${f}" # path_src
 pd="dist/" # path_dist
-rw=${w:-1920} # decktape-width
-rh=${h:-1080} # decktape-height
+rw=1920 # decktape-width
+rh=1080 # decktape-height
 ut="" # user template
-if [ $# == 5 ]; then ut="--data-dir=$(pwd) --template=../${t}"; fi
+if [ $# == 3 ]; then ut="--data-dir=$(pwd) --template=../${t}"; fi
 
 # start
 cd "${d}" || exit
