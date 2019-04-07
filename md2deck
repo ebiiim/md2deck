@@ -1,8 +1,9 @@
 #!/bin/sh
+
 cd "$(dirname "$0")" || exit
 
 u="Usage: ./md2deck DIR SLIDE [TEMPLATE]"
-if [ $# == 0 ]; then echo "${u}"; exit 0; fi
+if [ $# = 0 ]; then echo "${u}"; exit 0; fi
 
 d=$1 # DIR
 f=$2 # SLIDE
@@ -13,18 +14,19 @@ pd="dist/" # path_dist
 rw=1920 # decktape-width
 rh=1080 # decktape-height
 ut="" # user template
-if [ $# == 3 ]; then ut="--data-dir=$(pwd) --template=../${t}"; fi
+if [ $# = 3 ]; then ut="--data-dir=$(pwd) --template=../${t}"; fi
 
 # start
 cd "${d}" || exit
 
 # generate html
+# do not double quote ${ut}
 pandoc -t revealjs -s -o "${ps}.html" "${ps}.md" ${ut} -V revealjs-url="../reveal.js"
 open -a "Chromium" "${ps}.html"
 
 # generate pdf
 mkdir -p ${pd} # mkdir pd if pd does not exist
-npx decktape "${ps}.html" "${pd}/${ps}.pdf" --size "${rw}"x"${rh}"
+npx decktape "${ps}.html" "${pd}/${ps}_$(date +%Y%m%d_%H%M%S).pdf" --size "${rw}"x"${rh}"
 
 # end
 cd "$(dirname "$0")" || exit
