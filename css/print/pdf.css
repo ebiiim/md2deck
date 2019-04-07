@@ -1,4 +1,8 @@
 /**
+ * see ../README.md
+ */
+
+/**
  * This stylesheet is used to print reveal.js
  * presentations to PDF.
  *
@@ -160,5 +164,5 @@ ul, ol, div, p {
 .reveal .slide-number-pdf {
 	display: block;
 	position: absolute;
-	font-size: 14px;
+	font-size: 40px;
 }
