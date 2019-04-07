@@ -21,7 +21,7 @@ cd "${d}" || exit
 
 # generate html
 # do not double quote ${ut}
-pandoc -t revealjs -s -o "${ps}.html" "${ps}.md" ${ut} -V revealjs-url="../reveal.js"
+pandoc -t revealjs -s -o "${ps}.html" "${ps}.md" ${ut} -V revealjs-url="../reveal.js" -V controls=false
 open -a "Chromium" "${ps}.html"
 
 # generate pdf
