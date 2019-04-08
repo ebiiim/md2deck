@@ -30,7 +30,7 @@ $heading1TextShadow: none;
 $heading1Size: 2.62em; // golden ratio
 $heading2Size: 1.62em; // golden ratio
 $heading3Size: 1.00em;
-$heading4Size: 0.62em; // use h4 for named blocks
+$heading4Size: 0.71em; // use h4 for named blocks, silver ratio
 // code
 $codeFont: "Ricty Diminished", Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace;
 // bg
@@ -115,7 +115,7 @@ $selectionColor: #fff;
 
 .reveal ul ul {
   list-style-type: square;
-  font-size: $mainFontSize * 0.62;
+  font-size: $mainFontSize * 0.71;
 }
 
 // level 1 list
