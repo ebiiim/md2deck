@@ -53,6 +53,12 @@ $selectionColor: #fff;
   text-align: center;
 }
 
+#title-slide .subtitle {
+  font-size: 1.4*$mainFontSize !important;
+  margin-top: 0px !important;
+  margin-bottom: 0.4*$mainFontSize !important;
+}
+
 // normal slides (not title slide)
 .slide .level2 {
   top: 0px !important;
