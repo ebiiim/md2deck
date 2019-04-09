@@ -1,8 +1,10 @@
 #!/bin/sh
 
+echo "\n!!! Deprecated. Use Python version md2deck instead. !!!\n"
+
 cd "$(dirname "$0")" || exit
 
-u="md2deck v0.1.0\nUsage: ./md2deck DIR SLIDE [TEMPLATE]\nExample: ./md2deck examples hello templates/md2deck-0.1.0.revealjs"
+u="Usage: ./md2deck DIR SLIDE [TEMPLATE]\nExample: ./md2deck examples hello templates/md2deck-0.1.0.revealjs"
 if [ $# = 0 ]; then echo "${u}"; exit 0; fi
 
 d=$1 # DIR
