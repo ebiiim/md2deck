@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+
+"""
+Usage:
+  md2deck conv SLIDE... [--template=FILE | --pandoc-template] [--revealjs=PATH]
+  md2deck pdf SLIDE... [--resolution=VALUE]
+  md2deck show SLIDE [--browser=APP]
+  md2deck serve [--address=IP] [--port=PORT]
+  md2deck css
+  md2deck setup
+  md2deck -v | --version
+  md2deck -h | --help
+
+Commands:
+  conv SLIDE...     Convert Markdown(s) to Reveal.js HTML(s).
+                    e.g. `md2deck conv examples/hello.md`
+  pdf SLIDE...      Convert Reveal.js HTML(s) to PDF(s).
+                    e.g. `md2deck print examples/hello.html`
+  show SLIDE        [macOS] Open the slide with selected browser.
+                    e.g. `md2deck show examples/hello.html -b="Firefox"`
+  serve             Start a web server.
+                    e.g. `md2deck serve -p 8080`
+  css               Setup theme files.
+  setup             Fetch dependencies.
+
+Options:
+  -h --help             Show this screen.
+  -v --version          Show version.
+  -t --template=FILE    Set a Pandoc template file [default: templates/md2deck-0.1.0.revealjs].
+  --pandoc-template     Use the Pandoc default template.
+  --revealjs=PATH       Path to Reveal.js [default: reveal.js]
+  --resolution=VALUE    Decktape resolution [default: 1920x1080].
+  -b --browser=APP      Specify a browser [default: Chromium].
+  -a --address=IP       Web server IP address [default: 0.0.0.0].
+  -p --port=PORT        Web server TCP port [default: 8765].
+"""
+import sys
+import subprocess
+from pathlib import Path
+from docopt import docopt
+
+__version__ = '0.1.0'
+DEBUG = True
+
+
+def run_cmd(command: str):
+    # TODO: shell=True is not secure
+    if DEBUG:
+        print(command)
+    proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for l in iter(proc.stdout.readline, b''):
+        print(l.rstrip().decode())
+
+
+def parse_path(filename: str) -> (str, str):
+    """
+    'examples/hello.md' -> ('examples', 'hello')
+    """
+    file_path = Path(filename)
+    file_dir = file_path.parent
+    file_stem = file_path.stem
+    return file_dir, file_stem
+
+
+if __name__ == '__main__':
+    a = docopt(__doc__, version=f'md2deck {__version__}')
+
+    # TODO: if $(pwd) != project root
+
+    if DEBUG:
+        print(a)
+
+    if a['conv']:
+        if a['--pandoc-template']:
+            t = ''
+        else:
+            t = f'--data-dir=$(pwd) --template=../{a["--template"]}'
+        for slide in a['SLIDE']:
+            d, s = parse_path(slide)
+            cmd = f'cd "{d}"; pandoc -t revealjs -s -o "{s}.html" "{s}.md" {t} -V revealjs-url="../{a["--revealjs"]}" -V controls=false'
+            run_cmd(cmd)
+        sys.exit(0)
+
+    if a['pdf']:
+        for slide in a['SLIDE']:
+            d, s = parse_path(slide)
+            dist_dir = Path(f'{d}/dist')
+            if not dist_dir.exists():
+                dist_dir.mkdir()
+            cmd = f'cd "{d}"; npx decktape "{s}.html" "dist/{s}_$(date +%Y%m%d_%H%M%S).pdf" --size {a["--resolution"]}'
+            run_cmd(cmd)
+        sys.exit(0)
+
+    if a['show']:
+        cmd = f'open -a "{a["--browser"]}" {a["SLIDE"][0]}'
+        run_cmd(cmd)
+        sys.exit(0)
+
+    if a['serve']:
+        p = f'-p {a["--port"]}' if a['--port'] else ''
+        a = f'-a {a["--address"]}' if a['--address'] else ''
+        arg = '--' if p or a else ''
+        cmd = f'npm run serve {arg} {a} {p}'
+        run_cmd(cmd)
+        sys.exit(0)
+
+    if a['css']:
+        cmd = 'npm run setup-themes'
+        run_cmd(cmd)
+        sys.exit(0)
+
+    if a['setup']:
+        cmd = 'npm i; npm run setup'
+        sys.exit(0)
+
+    # no command
+    print('\n'.join(__doc__.split('\n')[1:10]))
