@@ -55,17 +55,24 @@ def run_cmd(command: str):
 def parse_path(filename: str) -> (str, str):
     """
     'examples/hello.md' -> ('examples', 'hello')
+    'examples/hello' -> ('examples', 'hello')
     """
     file_path = Path(filename)
     file_dir = file_path.parent
-    file_stem = file_path.stem
+    if file_path.suffix in ['.md', '.html', '.pdf']:
+        file_stem = file_path.stem
+    else:
+        file_stem = file_path.parts[-1]
     return file_dir, file_stem
 
 
 if __name__ == '__main__':
-    a = docopt(__doc__, version=f'md2deck {__version__}')
+    wd = Path(__file__).resolve().parent
+    if Path.cwd() != wd:
+        print(f'go to your working directory `cd {wd}`')
+        exit(0)
 
-    # TODO: if $(pwd) != project root
+    a = docopt(__doc__, version=f'md2deck {__version__}')
 
     if DEBUG:
         print(a)
@@ -85,6 +92,9 @@ if __name__ == '__main__':
         for slide in a['SLIDE']:
             d, s = parse_path(slide)
             dist_dir = Path(f'{d}/dist')
+            if dist_dir.is_file():
+                print(f'cannot mkdir {dist_dir} because it is a file')
+                sys.exit(0)
             if not dist_dir.exists():
                 dist_dir.mkdir()
             cmd = f'cd "{d}"; npx decktape "{s}.html" "dist/{s}_$(date +%Y%m%d_%H%M%S).pdf" --size {a["--resolution"]}'
