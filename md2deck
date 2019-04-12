@@ -8,10 +8,15 @@ Usage:
   md2deck serve [--address=IP] [--port=PORT]
   md2deck css
   md2deck setup
+  md2deck SLIDE... [--pdf] [--resolution=VALUE] [--template=FILE | --pandoc-template] [--revealjs=PATH]
   md2deck -v | --version
   md2deck -h | --help
 
 Commands:
+  SLIDE...          w/o `--pdf` option: Alias for `conv SLIDE...`.
+                    e.g. `md2deck examples/hello.md`
+                    w/ `--pdf` option: Combination of `conv` and `pdf`.
+                    e.g. `md2deck examples/hello.md` --pdf
   conv SLIDE...     Convert Markdown(s) to Reveal.js HTML(s).
                     e.g. `md2deck conv examples/hello.md`
   pdf SLIDE...      Convert Reveal.js HTML(s) to PDF(s).
@@ -19,27 +24,28 @@ Commands:
   show SLIDE        [macOS] Open the slide with selected browser.
                     e.g. `md2deck show examples/hello.html -b="Firefox"`
   serve             Start a web server.
-                    e.g. `md2deck serve -p 8080`
+                    e.g. `md2deck serve -P 8080`
   css               Setup theme files.
   setup             Fetch dependencies.
 
 Options:
   -h --help             Show this screen.
   -v --version          Show version.
+  -p --pdf              Generate PDF.
   -t --template=FILE    Set a Pandoc template file [default: templates/md2deck-0.1.0.revealjs].
   --pandoc-template     Use the Pandoc default template.
   --revealjs=PATH       Path to Reveal.js [default: reveal.js]
   --resolution=VALUE    Decktape resolution [default: 1920x1080].
   -b --browser=APP      Specify a browser [default: Chromium].
-  -a --address=IP       Web server IP address [default: 0.0.0.0].
-  -p --port=PORT        Web server TCP port [default: 8765].
+  -A --address=IP       Web server IP address [default: 0.0.0.0].
+  -P --port=PORT        Web server TCP port [default: 8765].
 """
 import sys
 import subprocess
 from pathlib import Path
 from docopt import docopt
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 DEBUG = False
 
 
@@ -47,9 +53,10 @@ def run_cmd(command: str):
     # TODO: shell=True is not secure
     if DEBUG:
         print(command)
-    proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for l in iter(proc.stdout.readline, b''):
-        print(l.rstrip().decode())
+    else:
+        proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for l in iter(proc.stdout.readline, b''):
+            print(l.rstrip().decode())
 
 
 def parse_path(filename: str) -> (str, str):
@@ -66,6 +73,34 @@ def parse_path(filename: str) -> (str, str):
     return file_dir, file_stem
 
 
+def func_conv(argd: dict) -> list:
+    cmds = []
+    if argd['--pandoc-template']:
+        t = ''
+    else:
+        t = f'--data-dir=$(pwd) --template=../{argd["--template"]}'
+    for slide in argd['SLIDE']:
+        d, s = parse_path(slide)
+        cmd = f'cd "{d}"; pandoc -t revealjs -s -o "{s}.html" "{s}.md" {t} -V revealjs-url="../{argd["--revealjs"]}" -V controls=false'
+        cmds.append(cmd)
+    return cmds
+
+
+def func_pdf(argd: dict) -> list:
+    cmds = []
+    for slide in argd['SLIDE']:
+        d, s = parse_path(slide)
+        dist_dir = Path(f'{d}/dist')
+        if dist_dir.is_file():
+            print(f'cannot mkdir {dist_dir} because it is a file')
+            sys.exit(0)
+        if not dist_dir.exists():
+            dist_dir.mkdir()  # side effect
+        cmd = f'cd "{d}"; npx decktape "{s}.html" "dist/{s}_$(date +%Y%m%d_%H%M%S).pdf" --size {argd["--resolution"]}'
+        cmds.append(cmd)
+    return cmds
+
+
 if __name__ == '__main__':
     wd = Path(__file__).resolve().parent
     if Path.cwd() != wd:
@@ -78,27 +113,13 @@ if __name__ == '__main__':
         print(a)
 
     if a['conv']:
-        if a['--pandoc-template']:
-            t = ''
-        else:
-            t = f'--data-dir=$(pwd) --template=../{a["--template"]}'
-        for slide in a['SLIDE']:
-            d, s = parse_path(slide)
-            cmd = f'cd "{d}"; pandoc -t revealjs -s -o "{s}.html" "{s}.md" {t} -V revealjs-url="../{a["--revealjs"]}" -V controls=false'
-            run_cmd(cmd)
+        for c in func_conv(a):
+            run_cmd(c)
         sys.exit(0)
 
     if a['pdf']:
-        for slide in a['SLIDE']:
-            d, s = parse_path(slide)
-            dist_dir = Path(f'{d}/dist')
-            if dist_dir.is_file():
-                print(f'cannot mkdir {dist_dir} because it is a file')
-                sys.exit(0)
-            if not dist_dir.exists():
-                dist_dir.mkdir()
-            cmd = f'cd "{d}"; npx decktape "{s}.html" "dist/{s}_$(date +%Y%m%d_%H%M%S).pdf" --size {a["--resolution"]}'
-            run_cmd(cmd)
+        for c in func_pdf(a):
+            run_cmd(c)
         sys.exit(0)
 
     if a['show']:
@@ -123,5 +144,14 @@ if __name__ == '__main__':
         cmd = 'npm i; npm run setup'
         sys.exit(0)
 
-    # no command
+    reserved_words = ['conv', 'pdf', 'show', 'serve', 'css', 'setup']
+    if a['SLIDE'] and a['SLIDE'][0] not in reserved_words:
+        for c in func_conv(a):
+            run_cmd(c)
+        if a['--pdf']:
+            for c in func_pdf(a):
+                run_cmd(c)
+        sys.exit(0)
+
+    # default
     print('\n'.join(__doc__.split('\n')[1:10]))
