@@ -123,25 +123,26 @@ if __name__ == '__main__':
         sys.exit(0)
 
     if a['show']:
-        cmd = f'open -a "{a["--browser"]}" {a["SLIDE"][0]}'
-        run_cmd(cmd)
+        c = f'open -a "{a["--browser"]}" {a["SLIDE"][0]}'
+        run_cmd(c)
         sys.exit(0)
 
     if a['serve']:
         p = f'-p {a["--port"]}' if a['--port'] else ''
         a = f'-a {a["--address"]}' if a['--address'] else ''
         arg = '--' if p or a else ''
-        cmd = f'npm run serve {arg} {a} {p}'
-        run_cmd(cmd)
+        c = f'npm run serve {arg} {a} {p}'
+        run_cmd(c)
         sys.exit(0)
 
     if a['css']:
-        cmd = 'npm run setup-themes'
-        run_cmd(cmd)
+        c = 'npm run setup-themes'
+        run_cmd(c)
         sys.exit(0)
 
     if a['setup']:
-        cmd = 'npm i; npm run setup'
+        c = 'npm i; npm run setup'
+        run_cmd(c)
         sys.exit(0)
 
     reserved_words = ['conv', 'pdf', 'show', 'serve', 'css', 'setup']
