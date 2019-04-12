@@ -40,7 +40,7 @@ from pathlib import Path
 from docopt import docopt
 
 __version__ = '0.1.0'
-DEBUG = True
+DEBUG = False
 
 
 def run_cmd(command: str):
