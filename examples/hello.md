@@ -15,11 +15,11 @@ margin: 0.1
 pagetitle: My Slide
 author-meta:
   - John Doe
-date-meta: 2019-04-08
+date-meta: 2019-04-14
 md2deck:
-  - version: 0.1.0
+  - version: 0.2.0
   - reveal.js: 3.8.0
-  - pandoc: 2.7.1
+  - pandoc: 2.7.2
   - decktape: 2.9.2
   - template: md2deck-0.1.0
 ---

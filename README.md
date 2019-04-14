@@ -6,7 +6,7 @@ md2deck is a CLI tool for generating presentation slides (with PDF) from Markdow
 
 - 2019.04.12 v0.1.0
     - first release
-    - improvements
+    - filenames without extensions are automatically interpreted as needed. (e.g. `example/hello` -> `example/hello.md`, `example/hello.html`, `example/hello.pdf`)
 - 2019.04.09 v0.1.0-beta
     - reimplemented md2deck in Python (it was a shell script)
 - 2019.04.08 v0.1.0-alpha
